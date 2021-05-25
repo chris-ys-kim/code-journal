@@ -28,10 +28,3 @@ $form.addEventListener('submit', function (event) {
   $form.reset();
   $preview.setAttribute('src', 'images/placeholder-image-square.jpg');
 });
-
-window.addEventListener('beforeunload', function (event) {
-  var entryJSON = JSON.stringify(data.entries);
-  localStorage.setItem('entries', entryJSON);
-  var dataJSON = JSON.stringify(data);
-  localStorage.setItem('data', dataJSON);
-});
