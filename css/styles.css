@@ -1,0 +1,41 @@
+header {
+  background-color: #562c81;
+  color: white;
+  padding: 10px;
+  font-family: sans-serif;
+  font-weight: lighter;
+}
+
+body {
+  background-color: #f0f0f0;
+}
+
+input {
+  border-style: groove;
+  border-radius: 5px;
+  width: 350px;
+  height: 35px;
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background-color: #562c81;
+  color: white;
+  border-radius: 5px 5px;
+  width: 65px;
+  height: 25px;
+  float: right;
+}
+
+img,
+textarea {
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+}
