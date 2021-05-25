@@ -13,8 +13,6 @@ if (previousDataJSON !== null) {
 }
 
 window.addEventListener('beforeunload', function (event) {
-  var entryJSON = JSON.stringify(data.entries);
-  localStorage.setItem('entries', entryJSON);
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('data', dataJSON);
 });
