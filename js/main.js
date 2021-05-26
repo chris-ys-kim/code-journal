@@ -34,58 +34,17 @@ window.addEventListener('DOMContentLoaded', function (event) {
   if (data.entries.length === 0) {
     $noEntry.className = 'noEntry';
   } else {
-    renderPostsAll(data.entries);
+    // creating multiple DOM Trees using for loop then append to $ul
+    for (var i = 0; i < data.entries.length; i++) {
+      var entrydos = renderPosts(data.entries[i]);
+      $ul.appendChild(entrydos);
+    }
   }
 });
 
 var $form = document.querySelector('.forms');
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
-  renderPosts();
-  $hidden.className = 'entry';
-  $form.reset();
-  $form.className = 'hidden';
-  $preview.setAttribute('src', 'images/placeholder-image-square.jpg');
-});
-
-function renderPostsAll(entries) {
-  for (var i = 0; i < entries.length; i++) {
-    var $container = document.createElement('div');
-    $container.className = 'container';
-
-    var $row = document.createElement('div');
-    $row.className = 'row';
-    $container.appendChild($row);
-
-    var $columnHalf1 = document.createElement('div');
-    $columnHalf1.className = 'column-half';
-    $row.appendChild($columnHalf1);
-
-    var $imgContainer = document.createElement('div');
-    $imgContainer.className = 'img-container';
-    $columnHalf1.appendChild($imgContainer);
-
-    var $img = document.createElement('img');
-    $img.setAttribute('src', entries[i].photo);
-    $imgContainer.appendChild($img);
-
-    var $columnHalf2 = document.createElement('div');
-    $columnHalf2.className = 'column-half';
-    $row.appendChild($columnHalf2);
-
-    var $p1 = document.createElement('p');
-    $p1.textContent = entries[i].title;
-    $columnHalf2.appendChild($p1);
-
-    var $p2 = document.createElement('p');
-    $p2.textContent = entries[i].notes;
-    $columnHalf2.appendChild($p2);
-
-    $ul.appendChild($container);
-  }
-}
-
-function renderPosts() {
 
   var newObject = {};
   newObject.title = $title.value;
@@ -96,6 +55,17 @@ function renderPosts() {
 
   data.entries.unshift(newObject);
 
+  var entrydos = renderPosts(newObject); // creating a single DOM Tree
+
+  $ul.prepend(entrydos); // appending the DOM Tree to $ul
+  $noEntry.className = 'noEntry hidden';
+  $hidden.className = 'entry';
+  $form.reset();
+  $form.className = 'hidden';
+  $preview.setAttribute('src', 'images/placeholder-image-square.jpg');
+});
+
+function renderPosts(entries) {
   var $container = document.createElement('div');
   $container.className = 'container';
 
@@ -112,7 +82,7 @@ function renderPosts() {
   $columnHalf1.appendChild($imgContainer);
 
   var $img = document.createElement('img');
-  $img.setAttribute('src', newObject.photo);
+  $img.setAttribute('src', entries.photo);
   $imgContainer.appendChild($img);
 
   var $columnHalf2 = document.createElement('div');
@@ -120,12 +90,12 @@ function renderPosts() {
   $row.appendChild($columnHalf2);
 
   var $p1 = document.createElement('p');
-  $p1.textContent = newObject.title;
+  $p1.textContent = entries.title;
   $columnHalf2.appendChild($p1);
 
   var $p2 = document.createElement('p');
-  $p2.textContent = newObject.notes;
+  $p2.textContent = entries.notes;
   $columnHalf2.appendChild($p2);
 
-  $ul.prepend($container);
+  return $container;
 }
