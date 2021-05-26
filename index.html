@@ -18,11 +18,31 @@
   <header>
     <div class="container">
       <div class="row">
-        <h2 class="column-full">Code Journal</h2>
+        <h2 class="column-full">Code Journal<span class="entries">Entries</span></h2>
       </div>
     </div>
   </header>
   <main>
+    <div class="entry hidden" data-view="entries">
+      <div class="container">
+        <div class="row">
+          <div class="column-full">
+            <button class="newEntry">NEW</button>
+            <div class="column-half-1">
+              <h1 class="newEntry2">Entries</h1>
+            </div>
+            <div class="column-full">
+              <p class="noEntry hidden">No entries have been recorded.</p>
+            </div>
+            <div class="column-half">
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul>
+      </ul>
+    </div>
+
     <div class="container" data-view="entry-form">
       <form class="forms">
         <div class="row">
@@ -52,9 +72,12 @@
         </div>
       </form>
     </div>
+
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+
+
 </body>
 
 </html>

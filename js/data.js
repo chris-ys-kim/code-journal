@@ -7,9 +7,15 @@ var data = {
   nextEntryId: 1
 };
 
+var previousDataJSON = localStorage.getItem('data');
+var dataObj = JSON.parse(previousDataJSON);
+
+data.view = dataObj.view;
+data.entries = dataObj.entries;
+data.editing = dataObj.editing;
+data.nextEntryId = dataObj.nextEntryId;
+
 window.addEventListener('beforeunload', function (event) {
-  var entryJSON = JSON.stringify(data.entries);
-  localStorage.setItem('entries', entryJSON);
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('data', dataJSON);
 });

@@ -39,3 +39,38 @@ textarea {
 label {
   font-weight: bold;
 }
+
+.img-container,
+img {
+  width: 100%;
+}
+
+p {
+  font-size: 25px;
+  margin-top: 0.1rem;
+  margin-bottom: 1rem;
+}
+
+.newEntry {
+  width: 70px;
+  height: 40px;
+  margin-top: 10px;
+  color: white;
+  background-color: #562b81;
+  border-style: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
+.entries {
+  margin-left: 25px;
+  cursor: pointer;
+}
+
+.noEntry {
+  text-align: center;
+}
