@@ -15,7 +15,6 @@ $photo.addEventListener('input', function (event) {
 });
 
 var $ul = document.querySelector('ul');
-
 var $hidden = document.querySelector('.entry.hidden');
 var $spanEntries = document.querySelector('.entries');
 var $newEntry = document.querySelector('.newEntry');
