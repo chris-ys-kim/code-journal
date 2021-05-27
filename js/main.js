@@ -18,6 +18,23 @@ var $ul = document.querySelector('ul');
 var $hidden = document.querySelector('.entry.hidden');
 var $spanEntries = document.querySelector('.entries');
 var $newEntry = document.querySelector('.newEntry');
+var $new = document.querySelector('.new');
+var $editEntry = document.querySelector('.editEntry.hidden');
+
+$ul.addEventListener('click', function (event) {
+  if (event.target.getAttribute('data-entry-id') !== null) {
+    $hidden.className = 'entry hidden';
+    $form.removeAttribute('class');
+    $new.className = 'new hidden';
+    $editEntry.className = 'editEntry';
+
+    data.editing = data.entries[data.entries.length - event.target.getAttribute('data-entry-id')];
+    $title.value = data.editing.title;
+    $photo.value = data.editing.photo;
+    $notes.value = data.editing.notes;
+    $preview.setAttribute('src', data.editing.photo);
+  }
+});
 
 $spanEntries.addEventListener('click', function (event) {
   $form.className = 'hidden';
@@ -45,17 +62,34 @@ var $form = document.querySelector('.forms');
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  var newObject = {};
-  newObject.title = $title.value;
-  newObject.photo = $photo.value;
-  newObject.notes = $notes.value;
-  newObject.entryId = data.nextEntryId;
-  data.nextEntryId++;
-  data.entries.unshift(newObject);
+  if (data.editing !== null) {
+    data.entries[data.entries.length - data.editing.entryId].title = $title.value;
+    data.entries[data.entries.length - data.editing.entryId].photo = $photo.value;
+    data.entries[data.entries.length - data.editing.entryId].notes = $notes.value;
 
-  var entrydos = renderPosts(newObject); // creating a single DOM Tree
+    for (var i = 0; i < data.entries.length; i++) {
+      var first = $ul.firstElementChild;
+      $ul.removeChild(first);
+    }
 
-  $ul.prepend(entrydos); // appending the DOM Tree to $ul
+    for (var element of data.entries) {
+      $ul.appendChild(renderPosts(element));
+    }
+  } else {
+    var newObject = {};
+    newObject.title = $title.value;
+    newObject.photo = $photo.value;
+    newObject.notes = $notes.value;
+    newObject.entryId = data.nextEntryId;
+    data.nextEntryId++;
+    data.entries.unshift(newObject);
+
+    var entrydos = renderPosts(newObject); // creating a single DOM Tree
+
+    $ul.prepend(entrydos); // appending the DOM Tree to $ul
+  }
+
+  data.editing = null;
   $noEntry.className = 'noEntry hidden';
   $hidden.className = 'entry';
   $form.reset();
@@ -86,6 +120,11 @@ function renderPosts(entries) {
   var $columnHalf2 = document.createElement('div');
   $columnHalf2.className = 'column-half';
   $row.appendChild($columnHalf2);
+
+  var $icon = document.createElement('i');
+  $icon.className = 'fas fa-pen right';
+  $icon.setAttribute('data-entry-id', entries.entryId);
+  $columnHalf2.appendChild($icon);
 
   var $p1 = document.createElement('p');
   $p1.textContent = entries.title;
