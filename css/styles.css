@@ -24,9 +24,11 @@ button {
   background-color: #562c81;
   color: white;
   border-radius: 5px 5px;
+  border-style: none;
   width: 65px;
   height: 25px;
   float: right;
+  cursor: pointer;
 }
 
 img,
@@ -43,6 +45,20 @@ label {
 .img-container,
 img {
   width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.end {
+  justify-content: flex-end;
+}
+
+.right {
+  float: right;
+  cursor: pointer;
+  font-size: 1.4rem;
 }
 
 p {

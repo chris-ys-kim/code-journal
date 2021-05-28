@@ -18,6 +18,23 @@ var $ul = document.querySelector('ul');
 var $hidden = document.querySelector('.entry.hidden');
 var $spanEntries = document.querySelector('.entries');
 var $newEntry = document.querySelector('.newEntry');
+var $new = document.querySelector('.new');
+var $editEntry = document.querySelector('.editEntry.hidden');
+
+$ul.addEventListener('click', function (event) {
+  if (event.target.getAttribute('data-entry-id') !== null) {
+    $hidden.className = 'entry hidden';
+    $form.removeAttribute('class');
+    $new.className = 'new hidden';
+    $editEntry.className = 'editEntry';
+
+    data.editing = data.entries[data.entries.length - event.target.getAttribute('data-entry-id')];
+    $title.value = data.editing.title;
+    $photo.value = data.editing.photo;
+    $notes.value = data.editing.notes;
+    $preview.setAttribute('src', data.editing.photo);
+  }
+});
 
 $spanEntries.addEventListener('click', function (event) {
   $form.className = 'hidden';
@@ -33,68 +50,54 @@ window.addEventListener('DOMContentLoaded', function (event) {
   if (data.entries.length === 0) {
     $noEntry.className = 'noEntry';
   } else {
-    renderPostsAll(data.entries);
+    // creating multiple DOM Trees using for loop then append to $ul
+    for (var i = 0; i < data.entries.length; i++) {
+      var entrydos = renderPosts(data.entries[i]);
+      $ul.appendChild(entrydos);
+    }
   }
 });
 
 var $form = document.querySelector('.forms');
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
-  renderPosts();
+
+  if (data.editing !== null) {
+    data.entries[data.entries.length - data.editing.entryId].title = $title.value;
+    data.entries[data.entries.length - data.editing.entryId].photo = $photo.value;
+    data.entries[data.entries.length - data.editing.entryId].notes = $notes.value;
+
+    for (var i = 0; i < data.entries.length; i++) {
+      var first = $ul.firstElementChild;
+      $ul.removeChild(first);
+    }
+
+    for (var element of data.entries) {
+      $ul.appendChild(renderPosts(element));
+    }
+  } else {
+    var newObject = {};
+    newObject.title = $title.value;
+    newObject.photo = $photo.value;
+    newObject.notes = $notes.value;
+    newObject.entryId = data.nextEntryId;
+    data.nextEntryId++;
+    data.entries.unshift(newObject);
+
+    var entrydos = renderPosts(newObject); // creating a single DOM Tree
+
+    $ul.prepend(entrydos); // appending the DOM Tree to $ul
+  }
+
+  data.editing = null;
+  $noEntry.className = 'noEntry hidden';
   $hidden.className = 'entry';
   $form.reset();
   $form.className = 'hidden';
   $preview.setAttribute('src', 'images/placeholder-image-square.jpg');
 });
 
-function renderPostsAll(entries) {
-  for (var i = 0; i < entries.length; i++) {
-    var $container = document.createElement('div');
-    $container.className = 'container';
-
-    var $row = document.createElement('div');
-    $row.className = 'row';
-    $container.appendChild($row);
-
-    var $columnHalf1 = document.createElement('div');
-    $columnHalf1.className = 'column-half';
-    $row.appendChild($columnHalf1);
-
-    var $imgContainer = document.createElement('div');
-    $imgContainer.className = 'img-container';
-    $columnHalf1.appendChild($imgContainer);
-
-    var $img = document.createElement('img');
-    $img.setAttribute('src', entries[i].photo);
-    $imgContainer.appendChild($img);
-
-    var $columnHalf2 = document.createElement('div');
-    $columnHalf2.className = 'column-half';
-    $row.appendChild($columnHalf2);
-
-    var $p1 = document.createElement('p');
-    $p1.textContent = entries[i].title;
-    $columnHalf2.appendChild($p1);
-
-    var $p2 = document.createElement('p');
-    $p2.textContent = entries[i].notes;
-    $columnHalf2.appendChild($p2);
-
-    $ul.appendChild($container);
-  }
-}
-
-function renderPosts() {
-
-  var newObject = {};
-  newObject.title = $title.value;
-  newObject.photo = $photo.value;
-  newObject.notes = $notes.value;
-  newObject.entryId = data.nextEntryId;
-  data.nextEntryId++;
-
-  data.entries.unshift(newObject);
-
+function renderPosts(entries) {
   var $container = document.createElement('div');
   $container.className = 'container';
 
@@ -111,20 +114,25 @@ function renderPosts() {
   $columnHalf1.appendChild($imgContainer);
 
   var $img = document.createElement('img');
-  $img.setAttribute('src', newObject.photo);
+  $img.setAttribute('src', entries.photo);
   $imgContainer.appendChild($img);
 
   var $columnHalf2 = document.createElement('div');
   $columnHalf2.className = 'column-half';
   $row.appendChild($columnHalf2);
 
+  var $icon = document.createElement('i');
+  $icon.className = 'fas fa-pen right';
+  $icon.setAttribute('data-entry-id', entries.entryId);
+  $columnHalf2.appendChild($icon);
+
   var $p1 = document.createElement('p');
-  $p1.textContent = newObject.title;
+  $p1.textContent = entries.title;
   $columnHalf2.appendChild($p1);
 
   var $p2 = document.createElement('p');
-  $p2.textContent = newObject.notes;
+  $p2.textContent = entries.notes;
   $columnHalf2.appendChild($p2);
 
-  $ul.prepend($container);
+  return $container;
 }
