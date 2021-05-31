@@ -20,7 +20,46 @@ input {
   margin-bottom: 0.5rem;
 }
 
-button {
+.modal {
+  position: fixed;
+  background-color: rgba(37, 37, 37, 0.7);
+  width: 100vw;
+  height: 100vh;
+}
+
+.modalContainer {
+  background-color: white;
+  width: 500px;
+  height: 180px;
+}
+
+.moveButtons {
+  margin-top: 4rem;
+  margin-left: 1.4rem;
+}
+
+.youSure {
+  text-align: center;
+  margin-top: 2rem;
+  font-weight: bold;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.delete {
+  display: inline;
+  font-size: 20px;
+  color: red;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.save {
   background-color: #562c81;
   color: white;
   border-radius: 5px 5px;
@@ -28,6 +67,27 @@ button {
   width: 65px;
   height: 25px;
   float: right;
+  cursor: pointer;
+}
+
+button.cancel {
+  background-color: #b6b6b6;
+  color: #343434;
+  border-style: none;
+  padding: 0.5rem 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.confirm {
+  background-color: #dc2626;
+  color: white;
+  border-style: none;
+  padding: 0.5rem 1rem;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 13rem;
   cursor: pointer;
 }
 
@@ -59,6 +119,7 @@ img {
   float: right;
   cursor: pointer;
   font-size: 1.4rem;
+  color: purple;
 }
 
 p {
@@ -68,14 +129,15 @@ p {
 }
 
 .newEntry {
-  width: 70px;
-  height: 40px;
-  margin-top: 10px;
+  background-color: #562c81;
   color: white;
-  background-color: #562b81;
+  border-radius: 5px 5px;
   border-style: none;
-  border-radius: 5px;
+  width: 65px;
+  height: 25px;
+  float: right;
   cursor: pointer;
+  margin-top: 1.4rem;
 }
 
 textarea {

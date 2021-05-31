@@ -20,6 +20,7 @@ var $spanEntries = document.querySelector('.entries');
 var $newEntry = document.querySelector('.newEntry');
 var $new = document.querySelector('.new');
 var $editEntry = document.querySelector('.editEntry.hidden');
+var $delete = document.querySelector('.delete.hidden');
 
 $ul.addEventListener('click', function (event) {
   if (event.target.getAttribute('data-entry-id') !== null) {
@@ -27,6 +28,7 @@ $ul.addEventListener('click', function (event) {
     $form.removeAttribute('class');
     $new.className = 'new hidden';
     $editEntry.className = 'editEntry';
+    $delete.className = 'delete';
 
     data.editing = data.entries[data.entries.length - event.target.getAttribute('data-entry-id')];
     $title.value = data.editing.title;
@@ -34,6 +36,42 @@ $ul.addEventListener('click', function (event) {
     $notes.value = data.editing.notes;
     $preview.setAttribute('src', data.editing.photo);
   }
+});
+
+$delete.addEventListener('click', function (event) {
+  $modal.className = 'modal';
+});
+
+var $modal = document.querySelector('.modal');
+var $cancel = document.querySelector('.cancel');
+$cancel.addEventListener('click', function (event) {
+  $modal.className = 'modal hidden';
+});
+
+var $confirm = document.querySelector('.confirm');
+$confirm.addEventListener('click', function (event) {
+  $modal.className = 'modal hidden';
+  $form.className = 'hidden';
+  $hidden.className = 'entry';
+
+  for (var i = 0; i < data.entries.length; i++) {
+    var first = $ul.firstElementChild;
+    $ul.removeChild(first);
+  }
+
+  data.entries.splice(data.entries.length - data.editing.entryId, 1);
+
+  for (var element of data.entries) {
+    $ul.appendChild(renderPosts(element));
+  }
+
+  data.nextEntryId--;
+  data.editing = null;
+
+  if (data.entries.length === 0) {
+    $noEntry.className = 'noEntry';
+  }
+
 });
 
 $spanEntries.addEventListener('click', function (event) {
@@ -44,6 +82,8 @@ $spanEntries.addEventListener('click', function (event) {
 $newEntry.addEventListener('click', function (event) {
   $form.removeAttribute('class');
   $hidden.className = 'entry hidden';
+  $delete.className = 'delete hidden';
+  data.editing = null;
 });
 
 window.addEventListener('DOMContentLoaded', function (event) {
@@ -62,7 +102,7 @@ var $form = document.querySelector('.forms');
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  if (data.editing !== null) {
+  if (data.editing !== null && data.entries.length !== 0) {
     data.entries[data.entries.length - data.editing.entryId].title = $title.value;
     data.entries[data.entries.length - data.editing.entryId].photo = $photo.value;
     data.entries[data.entries.length - data.editing.entryId].notes = $notes.value;
